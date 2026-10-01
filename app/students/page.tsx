@@ -2,9 +2,28 @@ import { StudentStatusBadge } from "@/components/StatusBadge";
 import { prisma } from "@/lib/prisma";
 import { createStudent } from "./actions";
 
-export default async function StudentsPage() {
+export default async function StudentsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string; classId?: string }>;
+}) {
+  const { q, classId } = await searchParams;
+
   const [students, classes] = await Promise.all([
     prisma.student.findMany({
+      where: {
+        AND: [
+          classId ? { classId } : {},
+          q
+            ? {
+                OR: [
+                  { name: { contains: q } },
+                  { admissionNo: { contains: q } },
+                ],
+              }
+            : {},
+        ],
+      },
       include: { class: true },
       orderBy: { admissionNo: "asc" },
     }),
@@ -72,6 +91,41 @@ export default async function StudentsPage() {
         </button>
       </form>
 
+      <form
+        action="/students"
+        className="flex flex-wrap items-center gap-3 rounded-lg border border-slate-200 bg-white p-4"
+      >
+        <input
+          name="q"
+          defaultValue={q ?? ""}
+          placeholder="Search by name or admission no"
+          className="min-w-[220px] flex-1 rounded-md border border-slate-300 px-3 py-2 text-sm"
+        />
+        <select
+          name="classId"
+          defaultValue={classId ?? ""}
+          className="rounded-md border border-slate-300 px-3 py-2 text-sm"
+        >
+          <option value="">All classes</option>
+          {classes.map((cls) => (
+            <option key={cls.id} value={cls.id}>
+              {cls.name}
+            </option>
+          ))}
+        </select>
+        <button
+          type="submit"
+          className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+        >
+          Filter
+        </button>
+        {(q || classId) && (
+          <a href="/students" className="text-sm text-slate-500 underline">
+            Clear
+          </a>
+        )}
+      </form>
+
       <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
         <table className="min-w-full text-left text-sm">
           <thead className="border-b border-slate-200 bg-slate-50 text-slate-600">
@@ -88,7 +142,7 @@ export default async function StudentsPage() {
             {students.length === 0 ? (
               <tr>
                 <td className="px-4 py-6 text-slate-500" colSpan={6}>
-                  No students yet.
+                  No students found.
                 </td>
               </tr>
             ) : (

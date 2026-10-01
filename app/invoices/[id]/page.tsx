@@ -4,6 +4,7 @@ import { InvoiceStatusBadge } from "@/components/StatusBadge";
 import { formatDate, formatMoney, invoiceBalance } from "@/lib/format";
 import { prisma } from "@/lib/prisma";
 import { submitPayment } from "../actions";
+import { PrintButton } from "@/components/PrintButton";
 
 export default async function InvoiceDetailPage({
   params,
@@ -33,32 +34,52 @@ export default async function InvoiceDetailPage({
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <Link href="/invoices" className="text-sm text-slate-600 underline">
+           <Link href="/invoices" className="print:hidden text-sm text-slate-600 underline">
         ← Back to invoices
       </Link>
 
       {receiptPayment ? (
         <div className="rounded-lg border border-green-200 bg-green-50 p-5">
-          <p className="text-sm font-medium text-green-800">Payment recorded</p>
-          <p className="mt-2 font-mono text-lg font-semibold text-green-900">
-            Receipt {receiptPayment.receiptNo}
-          </p>
-          <p className="mt-1 text-sm text-green-800">
-            {formatMoney(receiptPayment.amount)} via {receiptPayment.mode} on{" "}
-            {formatDate(receiptPayment.paymentDate)}
-          </p>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-sm font-medium text-green-800">Payment recorded</p>
+              <p className="mt-2 font-mono text-lg font-semibold text-green-900">
+                Receipt {receiptPayment.receiptNo}
+              </p>
+              <p className="mt-1 text-sm text-green-800">
+                {formatMoney(receiptPayment.amount)} via {receiptPayment.mode} on{" "}
+                {formatDate(receiptPayment.paymentDate)}
+              </p>
+            </div>
+            <PrintButton />
+          </div>
         </div>
       ) : null}
 
       <div className="rounded-lg border border-slate-200 bg-white p-5">
-        <div className="flex items-start justify-between gap-4">
+      <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-semibold tracking-tight">Invoice</h1>
             <p className="mt-1 text-sm text-slate-500">
               {invoice.feeStructure.term} · due {formatDate(invoice.dueDate)}
             </p>
           </div>
-          <InvoiceStatusBadge status={invoice.status} />
+          <div className="flex items-center gap-3">
+            <InvoiceStatusBadge status={invoice.status} />
+            <PrintButton label="Print Invoice" />
+            <a 
+  href={`https://wa.me/91${invoice.student.parentContact}?text=${encodeURIComponent(
+    `Dear Parent, this is a fee reminder for ${invoice.student.name} — ${invoice.feeStructure.term}. Total: ₹${(
+      invoice.totalAmount - invoice.concessionAmount + invoice.lateFeeApplied
+    ).toFixed(2)}, Paid: ₹${invoice.amountPaid.toFixed(2)}, Balance: ₹${balance.toFixed(2)}. Please contact the school office for payment.`
+  )}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="print:hidden rounded-md border border-green-300 bg-white px-3 py-1.5 text-sm font-medium text-green-700 hover:bg-green-50"
+>
+  Send via WhatsApp
+</a>
+          </div>
         </div>
 
         <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
@@ -156,10 +177,10 @@ export default async function InvoiceDetailPage({
       </div>
 
       {balance > 0 ? (
-        <form
-          action={submitPayment}
-          className="space-y-3 rounded-lg border border-slate-200 bg-white p-5"
-        >
+                <form
+                action={submitPayment}
+                className="print:hidden space-y-3 rounded-lg border border-slate-200 bg-white p-5"
+              >
           <h2 className="text-lg font-medium">Record payment</h2>
           <input type="hidden" name="invoiceId" value={invoice.id} />
           <div className="grid gap-3 sm:grid-cols-2">

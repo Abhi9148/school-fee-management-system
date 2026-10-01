@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const links = [
-  { href: "/", label: "Dashboard" },
+  { href: "/admin", label: "Dashboard" },
   { href: "/classes", label: "Classes" },
   { href: "/students", label: "Students" },
   { href: "/fee-structures", label: "Fee Structures" },
@@ -13,21 +13,23 @@ const links = [
 
 export function Sidebar() {
   const pathname = usePathname();
-
+  
+  if (pathname === "/" || pathname.startsWith("/parent-portal")) return null;
+  
   return (
-    <aside className="flex w-56 shrink-0 flex-col border-r border-slate-200 bg-white">
+    <aside className="print:hidden flex w-56 shrink-0 flex-col border-r border-slate-200 bg-white">
       <div className="border-b border-slate-200 px-5 py-5">
         <p className="text-sm font-semibold tracking-tight text-slate-900">
           School Fees
         </p>
         <p className="mt-0.5 text-xs text-slate-500">Management</p>
       </div>
-      <nav className="flex flex-col gap-0.5 p-3">
+      <nav className="flex flex-1 flex-col gap-0.5 p-3">
         {links.map((link) => {
           const active =
-            link.href === "/"
-              ? pathname === "/"
-              : pathname.startsWith(link.href);
+          link.href === "/"
+            ? pathname === "/"
+            : pathname.startsWith(link.href);
           return (
             <Link
               key={link.href}
@@ -43,6 +45,12 @@ export function Sidebar() {
           );
         })}
       </nav>
+      <div className="border-t border-slate-200 p-3">
+        <a href="/logout" className="block rounded-md px-3 py-2 text-sm text-slate-500 hover:bg-slate-100">
+          ← Logout
+        </a>
+      </div>
+      
     </aside>
   );
 }
