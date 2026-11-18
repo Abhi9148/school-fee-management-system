@@ -21,6 +21,15 @@ A full-stack web application built with **Next.js 16**, **TypeScript**, and **Pr
 
 ---
 
+## 📸 Screenshots
+
+### Landing Page
+<img width="1901" height="907" alt="image" src="https://github.com/user-attachments/assets/51cfd71b-4630-40ec-aa5d-1ba79d981f1b" />
+<img width="1901" height="923" alt="image" src="https://github.com/user-attachments/assets/b21623cd-365e-415f-968c-17da66a3470c" />
+<img width="1913" height="916" alt="image" src="https://github.com/user-attachments/assets/bb351e13-02c2-4a3c-999c-af0d15ea461b" />
+
+
+---
 ## 🛠️ Tech Stack
 
 * **Framework:** Next.js 16 (App Router) & React 19
