@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏫 School Fee Management System
 
-## Getting Started
+A full-stack web application built with **Next.js 16**, **TypeScript**, and **Prisma ORM** to streamline school fee administration. It provides a centralized dashboard for managing student records, tracking fee collections, monitoring pending dues, and maintaining structured financial oversight.
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?style=flat-square&logo=prisma&logoColor=white)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## ✨ Key Features
+
+* **Admin Dashboard:** Centralized overview displaying key student metrics, total fees collected, and pending balances.
+* **Student Management:** Add, view, update, and organize student profiles and enrollment details.
+* **Fee Tracking & Records:** Manage fee structures, record transactions, and track paid vs. overdue statuses.
+* **Protected Routes:** Custom Next.js middleware (`middleware.ts`) for secure route handling and access control.
+* **Modern Responsive UI:** Clean sidebar navigation and responsive layout styled with Tailwind CSS v4.
+* **Type-Safe Database Layer:** End-to-end type safety using TypeScript and Prisma Client.
+
+---
+
+## 🛠️ Tech Stack
+
+* **Framework:** Next.js 16 (App Router) & React 19
+* **Language:** TypeScript
+* **Styling:** Tailwind CSS v4
+* **ORM & Database:** Prisma ORM (`@prisma/client`)
+* **Linting:** ESLint 9 (`eslint-config-next`)
+
+---
+
+## 📂 Project Structure
+
+```text
+school-fee-management-system/
+├── app/                # Next.js App Router pages, layouts, and API routes
+├── components/         # Reusable UI components (sidebar, cards, tables, forms)
+├── lib/                # Utility functions and Prisma client configuration
+├── prisma/             # Database schema and migrations
+├── public/             # Static assets and images
+├── middleware.ts       # Route protection and request middleware
+└── next.config.ts      # Next.js configuration
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+⚙️ Getting Started (Local Setup)
+1. Clone the repository
+git clone https://github.com/Abhi9148/school-fee-management-system.git
+cd school-fee-management-system
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. Install dependencies
+npm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Configure environment variables
+Create a .env file in the root directory and add your database connection string:
 
-## Learn More
+DATABASE_URL="your_database_connection_url_here"
 
-To learn more about Next.js, take a look at the following resources:
+4. Set up the database
+Generate the Prisma client and push the schema to your database:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+npx prisma generate
+npx prisma db push
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+5. Run the development server
+npm run dev
 
-## Deploy on Vercel
+Open http://localhost:3000 in your browser to view the application.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+👤 Author
+Abhishek Subhash Kumbhar
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+GitHub: @Abhi9148
+
+LinkedIn: Abhishek Kumbhar
